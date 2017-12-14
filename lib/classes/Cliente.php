@@ -29,6 +29,21 @@ class Cliente extends ClasseBase{
 	private $dataRegistro;
 	
 	/**
+	 * Construtor com os dados do Cliente
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 */
+	public function __construct($nome = "", $telefone = "",$email = "",$senha = "")
+	{
+		$this->setNome($nome);
+		$this->setTelefone($telefone);
+		$this->setEmail($email);
+		$this->setSenha($senha);
+	}
+
+	/**
 	 * Retorna o nome do cliente.
 	 * @return string
 	 */
@@ -135,27 +150,33 @@ class Cliente extends ClasseBase{
 	}
 
 	/**
+	 * Seta os dados no objeto.
+	 * @param array
+	 */
+	public function setData($data)
+	{
+		$this->setId($data['Id']);
+		$this->setNome($data['Nome']);
+		$this->setTelefone($data['Telefone']);
+		$this->setEmail($data['Email']);
+		$this->setSenha($data['Senha']);
+		$this->setDataRegistro($data['DataRegistro']);
+	}
+
+	/**
  	* Pesquisa o cliente pelo ID e seta os dados no objeto.
  	* @param  int
  	*/
 	public function getById($id)
 	{
 		$banco = new Conexao();
+
 		$resultado = $banco->select("SELECT * FROM Clientes WHERE Id = :ID ", array(
 			':ID'=>$id
 		));
+
 		if(isset($resultado[0]))
-		{
-			$linha = $resultado[0];
-
-			$this->setId($linha['Id']);
-			$this->setNome($linha['Nome']);
-			$this->setTelefone($linha['Telefone']);
-			$this->setEmail($linha['Email']);
-			$this->setSenha($linha['Senha']);
-			$this->setDataRegistro($linha['DataRegistro']);
-		}
-
+			$this->setData($resultado[0]);
 	}
 
 	/**
@@ -195,22 +216,44 @@ class Cliente extends ClasseBase{
 			':SENHA' => $senha
 		));
 		if(isset($resultado[0]))
-		{
-			$linha = $resultado[0];
-
-			$this->setId($linha['Id']);
-			$this->setNome($linha['Nome']);
-			$this->setTelefone($linha['Telefone']);
-			$this->setEmail($linha['Email']);
-			$this->setSenha($linha['Senha']);
-			$this->setDataRegistro($linha['DataRegistro']);
-		}
+			$this->setData($resultado[0]);	
 		else
-		{
 			throw new Exception("E-mail ou senha incorreto!");
 			
-		}
+	}
 
+	/**
+	 * Método de inserir um cliente, ele pega os dados do objeto e insere no banco.
+	 */
+	public function insert()
+	{
+		$banco = new Conexao();
+
+		$resultado = $banco->select("CALL sp_clientes_insert(:NOME,:TELEFONE,:EMAIL,:SENHA);", array(
+			':NOME' => $this->getNome(),
+			':TELEFONE' => $this->getTelefone(),
+			':EMAIL' => $this->getEmail(),
+			':SENHA' => $this->getSenha()
+		));
+
+		if(count($resultado) > 0)
+			$this->setData($resultado[0]);
+	}
+
+	/**
+	 * Método de update do objeto cliente.
+	 */
+	public function update()
+	{
+		$banco = new Conexao();
+
+		$banco->query("UPDATE Clientes SET Nome = :NOME, Telefone = :TELEFONE, Email = :EMAIL, Senha = :SENHA WHERE Id = :ID",array(
+			':NOME' => $this->getNome(),
+			':TELEFONE' => $this->getTelefone(),
+			':EMAIL' => $this->getEmail(),
+			':SENHA' => $this->getSenha(),
+			':ID' => $this->getId()
+		));
 	}
 }
  ?>

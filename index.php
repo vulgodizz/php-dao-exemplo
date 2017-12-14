@@ -3,7 +3,9 @@ require_once("config.php");
 
 $cliente = new Cliente();
 
-$cliente->login("diego@diego.com","124");
+$cliente->getById(1);
+$cliente->setNome("Alterou");
+$cliente->update();
 
 echo $cliente;
 
