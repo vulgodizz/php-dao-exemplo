@@ -3,7 +3,8 @@ require_once("config.php");
 
 $cliente = new Cliente();
 
-$cliente->getById(1);
+$cliente->login("diego@diego.com","124");
 
 echo $cliente;
+
  ?>
