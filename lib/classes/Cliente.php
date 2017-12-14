@@ -35,12 +35,13 @@ class Cliente extends ClasseBase{
 	 * @param string
 	 * @param string
 	 */
-	public function __construct($nome = "", $telefone = "",$email = "",$senha = "")
+	public function __construct($nome = "", $telefone = "",$email = "",$senha = "", $dataRegistro = "")
 	{
 		$this->setNome($nome);
 		$this->setTelefone($telefone);
 		$this->setEmail($email);
 		$this->setSenha($senha);
+		$this->setDataRegistro($dataRegistro === "" ? new DateTime() : $dataRegistro);
 	}
 
 	/**
@@ -145,7 +146,7 @@ class Cliente extends ClasseBase{
 			'Telefone' => $this->getTelefone(),
 			'Email' => $this->getEmail(),
 			'Senha' => $this->getSenha(),
-			'DataRegistro' => $this->getDataRegistro()
+			'DataRegistro' => $this->getDataRegistro()->format("d/m/Y H:i:s")
 		));
 	}
 
@@ -160,7 +161,7 @@ class Cliente extends ClasseBase{
 		$this->setTelefone($data['Telefone']);
 		$this->setEmail($data['Email']);
 		$this->setSenha($data['Senha']);
-		$this->setDataRegistro($data['DataRegistro']);
+		$this->setDataRegistro(new DateTime($data['DataRegistro']));
 	}
 
 	/**
@@ -254,6 +255,25 @@ class Cliente extends ClasseBase{
 			':SENHA' => $this->getSenha(),
 			':ID' => $this->getId()
 		));
+	}
+
+	/**
+	 * Método de exclusão do objeto cliente.
+	 */
+	public function delete()
+	{
+		$banco = new Conexao();
+
+		$banco->query("DELETE FROM Clientes WHERE Id = :ID;",array(
+			':ID' => $this->getId()
+		));
+
+		$this->setId(0);
+		$this->setNome("");
+		$this->setTelefone("");
+		$this->setEmail("");
+		$this->setSenha("");
+		$this->setDataRegistro(new DateTime());
 	}
 }
  ?>

@@ -6,7 +6,7 @@ abstract class ClasseBase{
 	 * ID do objeto no banco de dados.
 	 * @var int
 	 */
-	private $id;
+	private $id = 0;
 
 	/**
 	 * Retorna o ID do objeto no banco de dados.
