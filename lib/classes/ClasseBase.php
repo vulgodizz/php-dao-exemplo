@@ -8,6 +8,8 @@ abstract class ClasseBase{
 	 */
 	private $id = 0;
 
+	private $instance;
+
 	/**
 	 * Retorna o ID do objeto no banco de dados.
 	 * @return int
