@@ -86,6 +86,5 @@ $clienteParaLogin->login("cliente@exemplo.com","12345");
 
 echo $clienteParaLogin;
 **/
-//Refaço a criação do componente de forma que fique bem mais fluida
 echo "Para usar os métodos de exemplo descomente os códigos listados no arquivo <b>index.php</b>.";
  ?>
