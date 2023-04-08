@@ -2,7 +2,7 @@
 
 //Definição de configurações de conexão do banco de dados.
 $driverDb = "mysql";
-$hostDb = "127.0.0.1";
+$hostDb = "192.168.0.1";
 $dbName = "Loja";
 $usuarioDb = "root";
 $senhaDb = "";
